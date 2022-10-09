@@ -1,0 +1,35 @@
+---
+- name: Installation serveurs web
+  hosts: prod
+  become: true
+  tasks:
+   - name: Conteneur serveur 1
+     docker_container:
+      name: serveur1
+      image: httpd:alpine
+      command:
+       - apk update
+       - apk upgrade
+      exposed_ports:
+       - 80
+      networks:
+       - name: network_frontend
+       - name: network_backend1
+      volumes:
+       - ./serveur1/html/:/usr/local/apache2/htdocs
+       - ./serveur1/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
+   - name: Conteneur serveur 2
+     docker_container:
+      name: serveur2
+      image: httpd:alpine
+      command:
+       - apk update
+       - apk upgrade
+      exposed_ports:
+       - 80
+      networks:
+       - name: network_frontend
+       - name: network_backend2
+      volumes:
+       - ./serveur2/html/:/usr/local/apache2/htdocs
+       - ./serveur2/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro

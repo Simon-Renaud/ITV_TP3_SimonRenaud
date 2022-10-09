@@ -1,0 +1,7 @@
+all:
+ prod:
+  ansible_user: admin
+  ansible_password: admin
+  network_frontend: frontend
+  network_backend1: backend1
+  network_backend2: backend2

@@ -1,0 +1,29 @@
+---
+- name: Installation conteneurs php
+  hosts: prod
+  become: true
+  tasks:
+   - name: Conteneur php1
+     docker_container:
+      name: php1
+      image: php:7.2.7-fpm-alpine3.7
+      command:
+       - apk update
+       - apk upgrade
+       - docker-php-ext-install mysqli
+      networks:
+       - name: network_backend1
+      volumes:
+       - ./serveur1/html:/usr/local/apache2/htdocs
+   - name: Conteneur php2
+     docker_container:
+      name: php2
+      image: php:7.2.7-fpm-alpine3.7
+      command:
+       - apk update
+       - apk upgrade
+       - docker-php-ext-install mysqli
+      networks:
+       - name: network_backend2
+      volumes:
+       - ./serveur2/html:/usr/local/apache2/htdocs

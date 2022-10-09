@@ -1,0 +1,30 @@
+---
+- name: Installation BD Mysql
+  hosts: prod
+  become: true
+  tasks:
+   - name: Creer Volume
+     docker_volume:
+      name: Mysqldata
+   - name: Creer network frontend
+     docker_network:
+      name: network_frontend
+   - name: Creer network backend1
+     docker_network:
+      name: network_backend1
+   - name: Creer network backend2
+     docker_network:
+      name: network_backend2
+   - name: Conteneur Mysql
+     docker_container:
+      name: mysql
+      image: mysql
+      networks:
+       - name: network_backend1
+       - name: network_backend2
+      env:
+       MYSQL_ROOT_PASSWORD: 'rootpassword'
+      ports:
+       - '3306:3306'
+      volumes:
+       - Mysqldata:/var/lib/mysql
