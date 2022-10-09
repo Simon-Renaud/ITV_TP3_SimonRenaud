@@ -3,14 +3,23 @@
   hosts: prod
   become: true
   tasks:
+   - name: Image php1
+     docker_image:
+      name: php1
+      source: build
+      build: 
+       path: ./php1
+   - name: Image php2
+     docker_image:
+      name: php2
+      source: build
+      build: 
+       path: ./php2
    - name: Conteneur php1
      docker_container:
       name: php1
-      image: php:7.2.7-fpm-alpine3.7
-      command:
-       - apk update
-       - apk upgrade
-       - docker-php-ext-install mysqli
+      image: php1
+      state: started
       networks:
        - name: network_backend1
       volumes:
@@ -18,11 +27,8 @@
    - name: Conteneur php2
      docker_container:
       name: php2
-      image: php:7.2.7-fpm-alpine3.7
-      command:
-       - apk update
-       - apk upgrade
-       - docker-php-ext-install mysqli
+      image: php2
+      state: started
       networks:
        - name: network_backend2
       volumes:

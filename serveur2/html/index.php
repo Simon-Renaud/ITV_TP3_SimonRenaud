@@ -1,11 +1,11 @@
 <h1>Test de connexion - Serveur 2</h1>
-<h4>Tentative de connxion Mysql depuis PHP...</h4>
+<h4>Tentative de connexion Mysql depuis PHP...</h4>
 
 <?php
     $host = 'mysql';
     $user = 'root';
     $pass = 'rootpassword';
-    $conn = new mysqli ($host, $user, $pass);
+    $conn = new mysqli($host, $user, $pass);
     
     if ($conn->connect_error)
     {

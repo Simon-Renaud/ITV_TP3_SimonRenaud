@@ -3,33 +3,44 @@
   hosts: prod
   become: true
   tasks:
+   - name: Creer network frontend
+     docker_network:
+      name: network_frontend
+   - name: Creer network backend1
+     docker_network:
+      name: network_backend1
+   - name: Creer network backend2
+     docker_network:
+      name: network_backend2
+   - name: Image serveur1
+     docker_image:
+      name: serveur1
+      source: build
+      build: 
+       path: ./serveur1
+   - name: Image serveur2
+     docker_image:
+      name: serveur2
+      source: build
+      build: 
+       path: ./serveur2
    - name: Conteneur serveur 1
      docker_container:
       name: serveur1
-      image: httpd:alpine
-      command:
-       - apk update
-       - apk upgrade
-      exposed_ports:
-       - 80
+      image: serveur1
+      state: started
       networks:
        - name: network_frontend
        - name: network_backend1
       volumes:
        - ./serveur1/html/:/usr/local/apache2/htdocs
-       - ./serveur1/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
    - name: Conteneur serveur 2
      docker_container:
       name: serveur2
-      image: httpd:alpine
-      command:
-       - apk update
-       - apk upgrade
-      exposed_ports:
-       - 80
+      image: serveur2
+      state: started
       networks:
        - name: network_frontend
        - name: network_backend2
       volumes:
        - ./serveur2/html/:/usr/local/apache2/htdocs
-       - ./serveur2/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
